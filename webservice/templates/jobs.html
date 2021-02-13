@@ -9,12 +9,10 @@
 {% endblock %}
 
 {% block content %}
-    <h3>Running Jobs</h3>
     <table id="jobs-table" class="display">
         <thead>
             <tr>
-                <td>Job ID</td>
-                <td>URL</td>
+                <td>Video Title</td>
                 <td>Status</td>
                 <td>Enqueued at</td>
                 <td>Started at</td>
@@ -26,16 +24,17 @@
             <tr>
                 <td>
                     {% if job['status'] == 'failed' %}
-                        <a href="{{ url_for('show_error', id=job['id'])}}">{{ job['id'] }}</a>
+                        <a href="{{ job['url'] }}" target=”_blank”>{{ job['video_title'] }}</a>
                     {% else %}
-                        {{ job['id'] }}
+                        {{ job['video_title'] }}
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ job['url'] }}" target=”_blank”>{{ job['url'] }}</a>
-                </td>
-                <td>
-                    {{ job['status'] }}
+                    {% if job['status'] == 'failed' %}
+                        <a href="{{ url_for('show_error', id=job['id']) }}">{{ job['status'] }}</a>
+                    {% else %}
+                        {{ job['status'] }}
+                    {% endif %}
                 </td>
                 <td>
                     {{ job['enqueued_at'] }}

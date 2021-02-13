@@ -31,8 +31,6 @@ def jobs():
     with Connection(conn):
         q = Queue(redis_queue_name, connection=conn)
         workers = Worker.all(queue=q)
-        #queue_length = len(q)
-        #registry = q.failed_job_registry
         failed_jobs = get_failed_jobs(q)
         enqueued_jobs = get_enqueued_jobs(q)
         running_jobs = get_running_jobs(workers)
@@ -54,14 +52,14 @@ def get_running_jobs(workers):
     for worker in workers:
         job = worker.get_current_job()
         if job is not None:
-            youtube_job = YoutubeDlJob.YoutubeDlJob(job.id, job.args[0], job.get_status(), job.exc_info, job.enqueued_at, job.started_at, job.ended_at)
+            youtube_job = YoutubeDlJob.YoutubeDlJob(job)
             running_jobs.append(youtube_job)
     return running_jobs
 
 def get_enqueued_jobs(queue):
     jobs = []
     for job in queue.jobs:
-        youtube_job = YoutubeDlJob.YoutubeDlJob(job.id, job.args[0], job.get_status(), job.exc_info, job.enqueued_at, job.started_at, job.ended_at)
+        youtube_job = YoutubeDlJob.YoutubeDlJob(job)
         jobs.append(youtube_job)
     return jobs
 
@@ -70,7 +68,7 @@ def get_finished_jobs(queue):
     registry = queue.finished_job_registry
     for job_id in registry.get_job_ids():
         job = Job.fetch(job_id, connection=conn)
-        youtube_job = YoutubeDlJob.YoutubeDlJob(job_id, job.args[0], job.get_status(), job.exc_info, job.enqueued_at, job.started_at, job.ended_at)
+        youtube_job = YoutubeDlJob.YoutubeDlJob(job)
         finished_jobs.append(youtube_job)
     return finished_jobs
 
@@ -79,7 +77,7 @@ def get_failed_jobs(queue):
     registry = queue.failed_job_registry
     for job_id in registry.get_job_ids():
         job = Job.fetch(job_id, connection=conn)
-        youtube_job = YoutubeDlJob.YoutubeDlJob(job_id, job.args[0], job.get_status(), job.exc_info, job.enqueued_at, job.started_at, job.ended_at)
+        youtube_job = YoutubeDlJob.YoutubeDlJob(job)
         failed_jobs.append(youtube_job)
     return failed_jobs
 
@@ -89,7 +87,6 @@ def remove_failed_job(queue, id):
 
 app.run(debug=True, host='0.0.0.0')
 
-#TODO lave endpoint med lidt mere information om status på Workers
 #sikre fejlhåndtering af fejlede downloads - noget retry
 #putte redis storage ud i et volume
 #NFS Volume

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: youtube-downloader-configs
+data:
+  REDIS_PATH: redis://redis-service.default:6379
+  YOUTUBE_QUEUE_NAME: youtube_queue
+  ENABLE_DEBUG_LOG: "1"

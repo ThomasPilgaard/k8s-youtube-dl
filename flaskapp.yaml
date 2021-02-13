@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flaskapp-pod
+spec:
+  selector:
+    matchLabels:
+      app: flaskapp
+  replicas: 1
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: flaskapp
+    spec:
+      containers:
+      - name: flaskapp
+        image: thomaspilgaard/flaskapp:0.0.1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+        envFrom:
+          - configMapRef:
+              name: youtube-downloader-configs
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: flaskapp-service
+spec:
+  selector:
+    app: flaskapp
+  type: NodePort
+
+  ports:
+    - protocol: TCP
+      port: 30162 # internal cluster port
+      targetPort: 5000 # container port to sent requests to
+      nodePort: 30163 # static port assigned to each node

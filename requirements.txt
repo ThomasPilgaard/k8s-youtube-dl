@@ -1,0 +1,5 @@
+redis
+rq
+youtube-dl
+Flask
+waitress

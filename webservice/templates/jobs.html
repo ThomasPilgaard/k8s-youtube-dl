@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    YouTube Download - Jobs
+{% endblock %}
+
+{% block header %}
+    Job Status
+{% endblock %}
+
+{% block content %}
+    <h3>Running Jobs</h3>
+    <table id="jobs-table" class="display">
+        <thead>
+            <tr>
+                <td>Job ID</td>
+                <td>URL</td>
+                <td>Status</td>
+                <td>Enqueued at</td>
+                <td>Started at</td>
+                <td>Ended at</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td>
+                    {% if job['status'] == 'failed' %}
+                        <a href="{{ url_for('show_error', id=job['id'])}}">{{ job['id'] }}</a>
+                    {% else %}
+                        {{ job['id'] }}
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ job['url'] }}" target=”_blank”>{{ job['url'] }}</a>
+                </td>
+                <td>
+                    {{ job['status'] }}
+                </td>
+                <td>
+                    {{ job['enqueued_at'] }}
+                </td>
+                <td>
+                    {{ job['started_at'] }}
+                </td>
+                <td>
+                    {{ job['ended_at'] }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

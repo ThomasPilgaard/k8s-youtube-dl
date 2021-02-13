@@ -1,0 +1,10 @@
+html body {
+    background-color: #f8f9fa;
+}
+
+.highlight {
+    background-color: #ced4da;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+}

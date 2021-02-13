@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    YouTube Download - Error Message
+{% endblock %}
+
+{% block header %}
+    Error Message
+{% endblock %}
+
+{% block content %}
+    <div class="rounded highlight">
+        <span style="white-space: break-spaces">{{ job['error_msg'] | safe }}</span>
+    </div>
+{% endblock %}

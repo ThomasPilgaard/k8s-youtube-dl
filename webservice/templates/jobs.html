@@ -17,6 +17,7 @@
                 <td>Enqueued at</td>
                 <td>Started at</td>
                 <td>Ended at</td>
+                <td></td>
             </tr>
         </thead>
         <tbody>
@@ -45,6 +46,12 @@
                 <td>
                     {{ job['ended_at'] }}
                 </td>
+                <td style="white-space:nowrap;">
+                    {% if job['status'] == 'failed' %}
+                        <a class="btn btn-success btn-sm" href="{{ url_for('requeue_job', id=job['id']) }}"><i class="fa fa-redo"></i></a>
+                        <a class="btn btn-danger btn-sm" href="{{ url_for('delete_failed_job', id=job['id']) }}" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-alt"></i></a>
+                    {% endif %}
+                  </td>
             </tr>
             {% endfor %}
         </tbody>

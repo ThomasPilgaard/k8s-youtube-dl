@@ -3,9 +3,10 @@ from rq import Queue, Connection, Worker
 from rq.job import Job
 import os
 import downloader
-from flask import Flask, render_template, request, escape
+from flask import Flask, render_template, request, escape, redirect, url_for
 import sys
 import YoutubeDlJob
+from flask_fontawesome import FontAwesome
 
 redis_queue_name = os.getenv('YOUTUBE_QUEUE_NAME')
 redis_path = os.getenv('REDIS_PATH')
@@ -13,6 +14,7 @@ redis_path = os.getenv('REDIS_PATH')
 conn = Redis.from_url(redis_path)
 
 app = Flask(__name__)
+fa = FontAwesome(app)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -46,6 +48,20 @@ def show_error(id):
         failed_jobs = get_failed_jobs(q)
         youtube_job = next((x for x in failed_jobs if x.id == id), None)
     return render_template('errormessage.html', job=youtube_job)
+
+@app.route('/deletefailedjob/<id>', methods=['GET'])
+def delete_failed_job(id):
+        with Connection(conn):
+            q = Queue(redis_queue_name, connection=conn)
+            remove_failed_job(q, id)
+        return redirect(url_for('jobs'))
+
+@app.route('/requeuejob/<id>', methods=['GET'])
+def requeue_job(id):
+    with Connection(conn):
+        q = Queue(redis_queue_name, connection=conn)
+        requeue_failed_job(q, id)
+    return redirect(url_for('jobs'))
 
 def get_running_jobs(workers):
     running_jobs = []
@@ -85,8 +101,14 @@ def remove_failed_job(queue, id):
     registry = queue.failed_job_registry
     registry.remove(id)
 
+def requeue_failed_job(queue, id):
+    registry = queue.failed_job_registry
+    registry.requeue(id)
+
 app.run(debug=True, host='0.0.0.0')
 
 #sikre fejlhåndtering af fejlede downloads - noget retry
 #putte redis storage ud i et volume
 #NFS Volume
+
+#Stop job: https://python-rq.org/docs/jobs/

@@ -4,3 +4,4 @@ youtube-dl
 Flask
 waitress
 requests
+Flask-FontAwesome

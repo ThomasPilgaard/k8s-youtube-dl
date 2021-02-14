@@ -38,7 +38,6 @@ def jobs():
         running_jobs = get_running_jobs(workers)
         finished_jobs = get_finished_jobs(q)
         all_jobs = failed_jobs + enqueued_jobs + running_jobs + finished_jobs
-        #print(failed_jobs, file=sys.stderr)
     return render_template('jobs.html', jobs = all_jobs)
 
 @app.route('/showerror/<id>', methods=['GET'])
@@ -107,7 +106,6 @@ def requeue_failed_job(queue, id):
 
 app.run(debug=True, host='0.0.0.0')
 
-#sikre fejlhåndtering af fejlede downloads - noget retry
 #putte redis storage ud i et volume
 #NFS Volume
 

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flaskapp-pod
+  name: youtube-dl-frontend
 spec:
   selector:
     matchLabels:
@@ -17,6 +17,10 @@ spec:
       labels:
         app: flaskapp
     spec:
+      volumes:
+        - name: youtube-folder
+          persistentVolumeClaim:
+            claimName: youtube-pvc
       containers:
       - name: flaskapp
         image: thomaspilgaard/flaskapp:0.0.1
@@ -28,12 +32,16 @@ spec:
         - containerPort: 5000
         envFrom:
           - configMapRef:
-              name: youtube-downloader-configs
+              name: youtube-downloader
+        volumeMounts:
+          - name: youtube-folder
+            mountPath: /mnt/storagesrv/youtube
+
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: flaskapp-service
+  name: youtube-dl-frontend
 spec:
   selector:
     app: flaskapp

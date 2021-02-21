@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: worker-pod
+  name: worker
 spec:
   selector:
     matchLabels:
       app: worker
-  replicas: 1
+  replicas: 3
   strategy: 
     type: RollingUpdate
     rollingUpdate:
@@ -17,6 +17,10 @@ spec:
       labels:
         app: worker
     spec:
+      volumes:
+        - name: youtube-folder
+          persistentVolumeClaim:
+            claimName: youtube-pvc
       containers:
       - name: worker
         image: thomaspilgaard/youtube-dl-worker:0.0.3
@@ -26,4 +30,7 @@ spec:
             cpu: "500m"
         envFrom:
           - configMapRef:
-              name: youtube-downloader-configs
+              name: youtube-downloader
+        volumeMounts:
+          - name: youtube-folder
+            mountPath: /mnt/storagesrv/youtube

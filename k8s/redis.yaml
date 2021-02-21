@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 
 metadata:
-  name: redis-pod
+  name: redis
   labels:
     app: redis
     role: master
@@ -20,7 +20,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: redis-service
+  name: redis
 spec:
   selector:
     app: redis

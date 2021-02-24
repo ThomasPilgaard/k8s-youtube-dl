@@ -13,6 +13,7 @@
         <thead>
             <tr>
                 <td>Video Title</td>
+                <td>Path</td>
                 <td>Status</td>
                 <td>Enqueued at</td>
                 <td>Started at</td>
@@ -29,6 +30,9 @@
                     {% else %}
                         {{ job['video_title'] }}
                     {% endif %}
+                </td>
+                <td>
+                    {{ job['path'] }}
                 </td>
                 <td>
                     {% if job['status'] == 'failed' %}
@@ -50,8 +54,11 @@
                     {% if job['status'] == 'failed' %}
                         <a class="btn btn-success btn-sm" href="{{ url_for('requeue_job', id=job['id']) }}"><i class="fa fa-redo"></i></a>
                         <a class="btn btn-danger btn-sm" href="{{ url_for('delete_failed_job', id=job['id']) }}" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-alt"></i></a>
+                    {% elif job['status'] == 'started' %}
+                        <a class="btn btn-danger btn-sm" href="{{ url_for('stop_job', id=job['id']) }}"><i class="fas fa-stop"></i></a>
+                    {% else %}
                     {% endif %}
-                  </td>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

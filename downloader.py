@@ -13,11 +13,15 @@ class MyLogger(object):
     def error(self, msg):
         print(msg)
 
-ydl_opts = {
-    'format': 'bestvideo+bestaudio',
-    'logger': MyLogger(),
-}
+def build_ydl_opts(path):
+    ydl_opts = {
+        'format': 'bestvideo+bestaudio',
+        'logger': MyLogger(),
+        'outtmpl': path + '%(title)s.%(ext)s'
+    }
+    return ydl_opts
 
-def download(url):
+def download(url, path):
+    ydl_opts = build_ydl_opts(path)
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])

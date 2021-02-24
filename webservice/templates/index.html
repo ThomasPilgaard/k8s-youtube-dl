@@ -9,4 +9,19 @@
 {% endblock %}
 
 {% block content %}
+    <form action="/download" method="POST">
+        <div class="row">
+            <div class="form-group col-md-6">
+                <input type="text" name="youtube-url" class="form-control" id="youtube-url" placeholder="Enter URL">
+            </div>
+            <div class="form-group col-md-6">
+                <input type="text" name="file-path" class="form-control" id="file-path" placeholder="File path">
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center mt-3">
+            <div class="form-group col-md-1">
+                <button type="submit" class="btn btn-primary">Download</button>
+            </div>
+        </div>
+    </form>
 {% endblock %}

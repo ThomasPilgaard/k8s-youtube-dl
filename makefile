@@ -5,10 +5,10 @@ buildenv:
 	docker build -t worker -f worker/Dockerfile .  
 
 runflask:
-	docker run -p 5000:5000 -e REDIS_PATH=redis://$(REDIS_IP):6379 -e YOUTUBE_QUEUE_NAME=youtube_queue flaskapp
+	docker run -v "/home/thomas/Documents/kubernetes/k8s-youtube-dl/test":/root/test -p 5000:5000 -e REDIS_PATH=redis://$(REDIS_IP):6379 -e YOUTUBE_QUEUE_NAME=youtube_queue -e YOUTUBE_STORAGE_MOUNT_PATH=/root/test/ flaskapp
 
 runworker:
-	docker run -e REDIS_PATH=redis://$(REDIS_IP):6379 -e YOUTUBE_QUEUE_NAME=youtube_queue worker
+	docker run -v "/home/thomas/Documents/kubernetes/k8s-youtube-dl/test":/root/test -e REDIS_PATH=redis://$(REDIS_IP):6379 -e YOUTUBE_QUEUE_NAME=youtube_queue -e ENABLE_DEBUG_LOG=1 -e YOUTUBE_STORAGE_MOUNT_PATH=/root/test/ worker
 
 startredis:
 	docker run --name "redis-test" -d -p 6379:6379 redis:alpine3.13

@@ -7,6 +7,7 @@ class YoutubeDlJob:
     def __init__(self, job):
         self.id = job.id
         self.url = job.args[0]
+        self.path = job.args[1]
         self.status = job.get_status()
         self.error_msg = job.exc_info
         self.enqueued_at = self.formatDate(job.enqueued_at)

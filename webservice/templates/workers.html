@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    YouTube Download - Workers
+{% endblock %}
+
+{% block header %}
+    Workers Status
+{% endblock %}
+
+{% block content %}
+<table id="jobs-table" class="display">
+    <thead>
+        <tr>
+            <td>PID</td>
+            <td>Hostname</td>
+            <td>State</td>
+            <td>Video Title</td>
+            <td>Last Heartbeat</td>
+            <td>Successful Job Count</td>
+            <td>Failed Job Count</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for worker in workers %}
+        <tr>
+            <td>
+                {{ worker['pid'] }}
+            </td>
+            <td>
+                {{ worker['hostname'] }}
+            </td>
+            <td>
+                {{ worker['state'] }}
+            </td>
+            <td>
+                {{ worker['video_title'] }}
+            </td>
+            <td>
+                {{ worker['last_heartbeat'] }}
+            </td>
+            <td>
+                {{ worker['successful_job_count'] }}
+            </td>
+            <td>
+                {{ worker['failed_job_count'] }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

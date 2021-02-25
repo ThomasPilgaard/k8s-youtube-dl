@@ -30,10 +30,10 @@ def download():
     url = request.form['youtube-url']
     path = request.form['file-path']
 
-    if path.startswith('/'):
+    if path and path.startswith('/'):
         path = path[1:]
 
-    if not path.endswith('/'):
+    if path and not path.endswith('/'):
         path = path + "/"
 
     full_path = youtube_folder_path + path

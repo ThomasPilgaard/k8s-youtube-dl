@@ -2,6 +2,7 @@ import datetime
 import requests
 import sys
 import json
+import pytz
 
 class YoutubeDlWorker:
     def __init__(self, worker):
@@ -9,16 +10,18 @@ class YoutubeDlWorker:
         self.hostname = worker.hostname
         self.state = worker.state
         self.current_job = worker.get_current_job()
-        self.last_heartbeat = self.formatDate(worker.last_heartbeat)
+        self.last_heartbeat = self.format_date(worker.last_heartbeat)
         self.successful_job_count = worker.successful_job_count
         self.failed_job_count = worker.failed_job_count
-        self.video_title = self.test(self.current_job)
+        self.video_title = self.check_for_job(self.current_job)
 
-    def formatDate(self, date):
+    def format_date(self, date):
         if date is not None:
-            return date.strftime("%d-%m-%Y %H:%M:%S")
+            date_with_timestamp = pytz.utc.localize(date)
+            local_time = date_with_timestamp.astimezone()
+            return local_time.strftime("%d-%m-%Y %H:%M:%S")
 
-    def test(self, job):
+    def check_for_job(self, job):
         if job is not None:
             return self.get_youtube_titel(job.args[0])
 

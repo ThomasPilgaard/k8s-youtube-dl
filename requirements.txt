@@ -5,3 +5,4 @@ Flask
 waitress
 requests
 Flask-FontAwesome
+pytz

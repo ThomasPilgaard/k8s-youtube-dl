@@ -14,6 +14,7 @@
             <tr>
                 <td>Video Title</td>
                 <td>Path</td>
+                <td>Type</td>
                 <td>Status</td>
                 <td>Enqueued at</td>
                 <td>Started at</td>
@@ -33,6 +34,9 @@
                 </td>
                 <td>
                     {{ job['path'] }}
+                </td>
+                <td>
+                    {{ job['type'] }}
                 </td>
                 <td>
                     {% if job['status'] == 'failed' %}

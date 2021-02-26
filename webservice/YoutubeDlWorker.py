@@ -1,8 +1,7 @@
 import datetime
-import requests
 import sys
-import json
 import pytz
+import utility
 
 class YoutubeDlWorker:
     def __init__(self, worker):
@@ -23,13 +22,5 @@ class YoutubeDlWorker:
 
     def check_for_job(self, job):
         if job is not None:
-            return self.get_youtube_titel(job.args[0])
+            return utility.get_youtube_title(job.args[0])
 
-    def get_youtube_titel(self, url):
-        url_parts = url.split('=')
-        if len(url_parts) > 1:
-            video_id = url_parts[1]
-            url = f"https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v={video_id}"
-            r = requests.get(url)
-            json_data = json.loads(r.text)
-            return json_data["title"]

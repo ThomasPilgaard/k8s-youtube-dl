@@ -73,8 +73,9 @@ def folder_structure():
 def delete_failed_job(id):
         with Connection(conn):
             job = get_job(id, conn)
-            file_name = os.path.normpath(job.path + job.video_title)
-            delete_job_on_system(file_name)
+            if job.path is not None and job.video_title is not None:
+                file_name = os.path.normpath(job.path + job.video_title)
+                delete_job_on_system(file_name)
             q = Queue(redis_queue_name, connection=conn)
             remove_failed_job(q, id)
         return redirect(url_for('jobs'))

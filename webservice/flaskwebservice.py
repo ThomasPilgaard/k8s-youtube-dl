@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, escape, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for
 import sys
 from flask_fontawesome import FontAwesome
 import utility

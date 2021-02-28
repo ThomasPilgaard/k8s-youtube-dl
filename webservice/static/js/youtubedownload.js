@@ -5,7 +5,7 @@ $(document).ready( function () {
             selector: 'td:nth-child(0)'
         },
         responsive: true,
-        "order": [[ 3, "desc" ]],
+        "order": [[ 4, "desc" ]],
     });
 
     $('#workers-table').DataTable({

@@ -1,9 +1,9 @@
-FROM python:3.8
+FROM python:3.9.2-alpine3.12
 WORKDIR /code
-RUN apt-get update && apt-get install -y \
-    youtube-dl
+RUN apk add --no-cache youtube-dl ffmpeg && rm -rf /var/cache/apk/*
 COPY requirements.txt .
 RUN pip install -r requirements.txt
+RUN rm requirements.txt
 COPY worker/worker.py .
 COPY downloader.py .
 CMD [ "python3", "worker.py" ]
